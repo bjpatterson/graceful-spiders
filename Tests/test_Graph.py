@@ -129,7 +129,3 @@ def test_set_label(g3):
     assert g3.get_label(0) is None
     g3.set_label(0, "something")
     assert g3.get_label(0) is "something"
-
-
-def test_ci():
-    assert 1 == 2  # prove that CI is working
