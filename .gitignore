@@ -50,4 +50,9 @@ Temporary Items
 .idea/*
 
 # pyTest
-Tests/.cache/*
+.cache/*
+*/.cache/*
+Tests/__pycache/*
+
+# compiled python
+*.pyc
