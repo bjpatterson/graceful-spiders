@@ -38,15 +38,13 @@ class SpiderGenerator(object):
         if maximum is 1:
             # All spiders of the current order have been exhausted
             # build the first spider of the next order
-            self._order += 1
-
-            if self._order is 4:
+            if self._order + 1 is 4:
                 next_legs = {1: 3}
             else:
-                next_legs = {self._order-3: 1, 1: 2}
+                next_legs = {self._order-2: 1, 1: 2}
 
         else:
-            next_legs = self._last_leg_lengths
+            next_legs = self._last_leg_lengths.copy()
             new_length = second_min - 1
 
             if minimum is 1:
@@ -95,5 +93,6 @@ class SpiderGenerator(object):
         """ Return the next spider as a Graph object """
         next_lengths = self._next_leg_lengths()
         next_spider = self.create_spider(next_lengths)
+        self._order = next_spider.order
         self._last_leg_lengths = next_lengths
         return next_spider
