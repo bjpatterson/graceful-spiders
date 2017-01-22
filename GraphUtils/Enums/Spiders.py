@@ -14,7 +14,7 @@ class SpiderGenerator(object):
     def __init__(self, leg_lengths=None):
         """ Initialize the class. if leg lengths"""
         if leg_lengths is not None:
-            self._last_leg_lengths = leg_lengths.sort(reverse=True)
+            self._last_leg_lengths = leg_lengths
             order = 1  # (the root node)
             for key, val in leg_lengths.iteritems():
                 order += key * val
