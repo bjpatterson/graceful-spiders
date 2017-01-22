@@ -11,6 +11,10 @@ class Graph(object):
         """nothing special required here"""
         self.reset()
 
+    @property
+    def order(self):
+        return len(self._node_dict)
+
     def add_node(self, label=None):
         """adds a new node to the graph and returns the node's id"""
         self._node_dict.update({self._id_next: label})

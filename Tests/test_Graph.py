@@ -129,3 +129,7 @@ def test_set_label(g3):
     assert g3.get_label(0) is None
     g3.set_label(0, "something")
     assert g3.get_label(0) is "something"
+
+def test_order(g0, g3):
+    assert g0.order == 0
+    assert g3.order == 3
