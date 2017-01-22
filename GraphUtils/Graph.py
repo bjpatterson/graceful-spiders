@@ -13,6 +13,7 @@ class Graph(object):
 
     @property
     def order(self):
+        """define the order of a graph"""
         return len(self._node_dict)
 
     def add_node(self, label=None):
