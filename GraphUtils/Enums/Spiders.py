@@ -59,6 +59,8 @@ class SpiderGenerator(object):
                     next_legs.update({
                         new_length: edges_to_add / new_length, edges_to_add % new_length: 1
                     })
+            elif minimum is 2:
+                next_legs.update({2: next_legs[2] - 1, 1: 2})
             else:
                 next_legs.update({
                     minimum: next_legs[minimum] - 1
