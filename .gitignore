@@ -52,6 +52,7 @@ Temporary Items
 # pyTest
 .cache/*
 */.cache/*
+lastfailed
 Tests/__pycache/*
 
 # compiled python
