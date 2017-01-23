@@ -82,3 +82,10 @@ class Graph(object):
             elif node2 is node_id:
                 adjacent_nodes.add(node1)
         return adjacent_nodes
+
+    def copy(self):
+        new_graph = Graph()
+        new_graph._id_next = self._id_next
+        new_graph._node_dict = self._node_dict.copy()
+        new_graph._edge_set = self._edge_set.copy()
+        return new_graph
