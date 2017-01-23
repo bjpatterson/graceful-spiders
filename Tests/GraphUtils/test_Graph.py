@@ -33,29 +33,29 @@ def test_add_node(g0):
 
 
 def test_add_edge(g3):
-    assert g3._edge_list == []
+    assert g3._edge_set == set()
     g3.add_edge(0, 1)
-    assert (0, 1) in g3._edge_list
+    assert (0, 1) in g3._edge_set
     g3.add_edge(1, 0)
-    assert (1, 0) not in g3._edge_list
+    assert (1, 0) not in g3._edge_set
     g3.add_edge(2, 0)
-    assert (0, 2) in g3._edge_list
-    assert (2, 0) not in g3._edge_list
+    assert (0, 2) in g3._edge_set
+    assert (2, 0) not in g3._edge_set
     g3.add_edge(2, 2)
-    assert (2, 2) not in g3._edge_list
+    assert (2, 2) not in g3._edge_set
     g3.add_edge(0, 3)
-    assert (0, 3) not in g3._edge_list
+    assert (0, 3) not in g3._edge_set
 
 
 def test_remove_node(g3):
     g3.add_edge(0, 1)
     g3.add_edge(0, 2)
     g3.add_edge(1, 2)
-    assert len(g3._edge_list) == 3
+    assert len(g3._edge_set) == 3
 
     g3.remove_node(2)
-    assert len(g3._edge_list) == 1
-    assert (0, 1) in g3._edge_list
+    assert len(g3._edge_set) == 1
+    assert (0, 1) in g3._edge_set
     assert len(g3._node_dict) == 2
     assert 2 not in g3._node_dict.keys()
 
@@ -65,26 +65,26 @@ def test_remove_edge(g3):
     g3.add_edge(0, 2)
     g3.add_edge(1, 2)
     assert len(g3._node_dict.keys()) == 3
-    assert len(g3._edge_list) == 3
-    assert (1, 2) in g3._edge_list
+    assert len(g3._edge_set) == 3
+    assert (1, 2) in g3._edge_set
 
     g3.remove_edge(1, 2)
     assert len(g3._node_dict.keys()) == 3  # (no change)
-    assert len(g3._edge_list) == 2
-    assert (1, 2) not in g3._edge_list
+    assert len(g3._edge_set) == 2
+    assert (1, 2) not in g3._edge_set
 
 
 def test_reset(g3):
     g3.add_edge(0, 1)
     g3.add_edge(0, 2)
     g3.add_edge(1, 2)
-    assert g3._node_dict != {}
-    assert g3._edge_list != []
+    assert g3._node_dict != dict()
+    assert g3._edge_set != set()
     assert g3._id_next != 0
 
     g3.reset()
-    assert g3._node_dict == {}
-    assert g3._edge_list == []
+    assert g3._node_dict == dict()
+    assert g3._edge_set == set()
     assert g3._id_next == 0
 
 
@@ -133,3 +133,11 @@ def test_set_label(g3):
 def test_order(g0, g3):
     assert g0.order == 0
     assert g3.order == 3
+
+def test_get_adjacent_nodes(g3):
+    assert len(g3.get_adjacent_nodes(0)) is 0
+    g3.add_edge(0, 1)
+    g3.add_edge(0, 2)
+    assert all(node in g3.get_adjacent_nodes(0) for node in [1, 2])
+    assert 0 in g3.get_adjacent_nodes(1)
+    assert 0 in g3.get_adjacent_nodes(2)
