@@ -1,8 +1,8 @@
-""" A class for determining whether a given graph is graceful or not """
-import GraphUtils.Graph as Graph
+""" Tools for checking graph gracefulness """
 
 
 class GracefulChecker(object):
+    """ A class for determining whether a given graph is graceful or not """
 
     def find_labeling(self, graph):
         """
