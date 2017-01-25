@@ -1,6 +1,11 @@
 import pytest
+import GraphUtils
 import GraphUtils.Graph as Graph
 import GraphUtils.Checkers.GracefulChecker as gc
+
+@pytest.fixture
+def checker():
+    return gc.GracefulChecker()
 
 @pytest.fixture
 def butterfly():
@@ -26,9 +31,17 @@ def path_10():
     return graph
 
 
-def test_find_labeling(butterfly, path_10):
-    assert False
+def test_find_graceful_labeling(checker, butterfly, path_10):
+    graceful_path = checker.find_graceful_labeling(path_10)
+    edge_labels = set(range(10))
+    assert type(graceful_path) is GraphUtils.Graph.Graph
+    for node1, node2 in graceful_path.get_edges():
+        # (will crash if duplicates induced labels are present)
+        edge_labels.remove(abs(graceful_path.get_label(node1) - graceful_path.get_label(node2)))
+
+    assert checker.find_graceful_labeling(butterfly) is None
 
 
-def test_find_labeling_from_partial(path_10):
-    assert False
+def test_find_labeling_from_partial(checker, path_10):
+    """ Tested extensively by recursive calls in `test_find_graceful_labeling` """
+    pass
