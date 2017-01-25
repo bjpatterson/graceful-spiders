@@ -141,3 +141,14 @@ def test_get_adjacent_nodes(g3):
     assert all(node in g3.get_adjacent_nodes(0) for node in [1, 2])
     assert 0 in g3.get_adjacent_nodes(1)
     assert 0 in g3.get_adjacent_nodes(2)
+
+def test_copy(g3):
+    bad_copy = g3
+    assert len(g3._node_dict) is len(bad_copy._node_dict)
+    bad_copy.add_node()
+    assert len(g3._node_dict) is len(bad_copy._node_dict)  # same object reference
+
+    good_copy = g3.copy()
+    assert len(g3._node_dict) is len(good_copy._node_dict)
+    good_copy.add_node()
+    assert len(g3._node_dict) is not len(good_copy._node_dict)  # two different object references
