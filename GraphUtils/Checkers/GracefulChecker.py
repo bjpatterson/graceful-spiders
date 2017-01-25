@@ -55,8 +55,10 @@ class GracefulChecker(object):
                     continue
                 else:
                     # recurse on the new partial labeling
-                    return self._find_labeling_from_partial(
+                    result = self._find_labeling_from_partial(
                         graph.copy(), unlabeled_nodes[1:], n_labels, e_labels)
+                    if result is not None:
+                        return result
             except KeyError:
                 # if a duplicate induced edge is found, skip to the next iteration
                 pass
