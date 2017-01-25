@@ -4,7 +4,7 @@
 class GracefulChecker(object):
     """ A class for determining whether a given graph is graceful or not """
 
-    def find_labeling(self, graph):
+    def find_graceful_labeling(self, graph):
         """
         Given an input graph, output its 'first' graceful labeling, if one exists
         (deterministic, but arbitrary)
