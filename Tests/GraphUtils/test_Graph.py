@@ -1,6 +1,7 @@
 """Tests GraphUtils.Graph"""
 import pytest
 import GraphUtils.Graph as Graph
+import collections
 
 
 @pytest.fixture
@@ -112,6 +113,7 @@ def test_has_node(g3):
     assert g3.has_node(2)
     assert not g3.has_node(3)
 
+
 def test_has_edge(g3):
     assert not g3.has_edge(0, 1)
     assert not g3.has_edge(1, 0)
@@ -119,20 +121,24 @@ def test_has_edge(g3):
     assert g3.has_edge(0, 1)
     assert g3.has_edge(1, 0)
 
+
 def test_get_label(g0):
     g0.add_node()
     g0.add_node("test")
     assert g0.get_label(0) is None
     assert g0.get_label(1) is "test"
 
+
 def test_set_label(g3):
     assert g3.get_label(0) is None
     g3.set_label(0, "something")
     assert g3.get_label(0) is "something"
 
+
 def test_order(g0, g3):
     assert g0.order == 0
     assert g3.order == 3
+
 
 def test_get_adjacent_nodes(g3):
     assert len(g3.get_adjacent_nodes(0)) is 0
@@ -142,6 +148,49 @@ def test_get_adjacent_nodes(g3):
     assert 0 in g3.get_adjacent_nodes(1)
     assert 0 in g3.get_adjacent_nodes(2)
 
+
+def test_get_degree(g3):
+    for node in g3.get_nodes():
+        assert(g3.get_degree(node) is 0)
+    g3.add_edge(0, 1)
+    assert(g3.get_degree(0) is 1)
+    assert(g3.get_degree(1) is 1)
+    assert(g3.get_degree(2) is 0)
+    g3.add_edge(0, 2)
+    assert (g3.get_degree(0) is 2)
+    assert (g3.get_degree(1) is 1)
+    assert (g3.get_degree(2) is 1)
+    g3.add_edge(1, 2)
+    for node in g3.get_nodes():
+        assert(g3.get_degree(node) is 2)
+
+
+def test_degree_sequence(g3):
+    assert(collections.Counter(g3.degree_sequence) == collections.Counter([0, 0, 0]))
+    g3.add_edge(0, 2)
+    assert(collections.Counter(g3.degree_sequence) == collections.Counter([1, 1, 0]))
+    g3.add_edge(1, 2)
+    assert(collections.Counter(g3.degree_sequence) == collections.Counter([2, 1, 1]))
+    g3.add_edge(0, 1)
+    assert(collections.Counter(g3.degree_sequence) == collections.Counter([2, 2, 2]))
+    g3.add_node()
+    assert (collections.Counter(g3.degree_sequence) == collections.Counter([2, 2, 2, 0]))
+    g3.remove_node(0)
+    assert (collections.Counter(g3.degree_sequence) == collections.Counter([1, 1, 0]))
+
+
+def test_component_count(g3):
+    assert g3.component_count is 3
+    g3.add_edge(0, 1)
+    assert g3.component_count is 2
+    g3.add_edge(0, 2)
+    assert g3.component_count is 1
+    g3.add_edge(1, 2)
+    assert g3.component_count is 1
+    g3.add_node()
+    assert g3.component_count is 2
+
+
 def test_copy(g3):
     bad_copy = g3
     assert len(g3._node_dict) is len(bad_copy._node_dict)
@@ -149,6 +198,10 @@ def test_copy(g3):
     assert len(g3._node_dict) is len(bad_copy._node_dict)  # same object reference
 
     good_copy = g3.copy()
+    assert good_copy._id_next == g3._id_next
+    assert good_copy._node_dict == g3._node_dict
+    assert good_copy._edge_set == g3._edge_set
+    assert good_copy._degrees == g3._degrees
     assert len(g3._node_dict) is len(good_copy._node_dict)
     good_copy.add_node()
     assert len(g3._node_dict) is not len(good_copy._node_dict)  # two different object references
