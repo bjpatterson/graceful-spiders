@@ -8,6 +8,7 @@ SPIDER_FILE = 'results/spider_enum_order_{:0>3}.txt'
 SEPARATED_FOLDER = 'results/order_{0}'
 SEPARATED_FILE = 'order_{0:0>3}_root_{1:0>3}.txt'
 
+
 def detect_root(edge_list):
     for i in range(len(edge_list) + 1):
         if len([(a, b) for (a, b) in edge_list if a is i or b is i]) > 2:
