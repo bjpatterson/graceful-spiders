@@ -59,4 +59,4 @@ Tests/__pycache/*
 *.pyc
 
 # Data files
-Results/*
+Scripts/Results/*
