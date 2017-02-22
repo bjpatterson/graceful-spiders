@@ -5,6 +5,28 @@ import time
 
 OUTPATH = 'results/spider_enum_order_{0:0>3}.txt'
 
+def is_unique_graceful_spider(graph):
+    """
+    Given a graceful graph, detect whether it's a spider.
+    (Some special logic detects and rejects certain types of symmetric spiders)
+    """
+    ds = graph.degree_sequence
+    if ds[0] > 2 >= ds[1] and ds[-1] > 0 and graph.component_count is 1:
+        # connected graph with a single node of degree > 2 (definition of a spider)
+        if graph.order % 2 is 0:  # even-order spiders don't have symmetry issues
+            return True
+        elif graph.get_degree(graph.order / 2) <= 2:  # non-central branch nodes are not symmetric
+            return True
+        elif graph.has_edge(0, graph.order - 2):  # choose exactly one edge with label n-2
+            return True
+        else:
+            # technically a graceful spider, but would result in double-counting
+            return False
+
+    else:
+        return False
+
+
 def enum_graceful_spiders(partial_graph, next_edge):
     """
     Given a partial graceful labeling, and the next edge label,
@@ -20,13 +42,11 @@ def enum_graceful_spiders(partial_graph, next_edge):
 
             # if that was the last edge, check for gracefulness, and output as needed
             if next_edge is 1:
-                ds = partial_graph.degree_sequence
-                if ds[0] > 2 >= ds[1] and ds[-1] > 0 and partial_graph.component_count is 1:
-                    # connected graph with a single node of degree > 2 (definition of a spider)
+                if is_unique_graceful_spider(partial_graph):
                     # record enough detail to recreate the spider (edges are sufficient)
                     order = partial_graph.order
                     edges = [e for e in partial_graph.get_edges()]
-                    edge_complement = [(order - a - 1, order - b - 1) for (a, b) in edges]
+                    edge_complement = [(order - b - 1, order - a - 1) for (a, b) in edges]
                     with open(OUTPATH.format(order), 'a') as outfile:
                         outfile.write(str(edges))
                         outfile.write('\n')
@@ -76,14 +96,14 @@ def potentially_graceful(graph, node1, node2):
     return False
 
 if __name__ == '__main__':
-    ORDER = 15
 
-    # create an empty graph of the appropriate order
-    g = Graph.Graph()
-    for i in range(ORDER):
-        g.add_node()
+    for order in range(4, 15):
+        # create an empty graph of the appropriate order
+        g = Graph.Graph()
+        for i in range(order):
+            g.add_node()
 
-    start = time.time()
-    enum_graceful_spiders(g, ORDER - 1)
-    end = time.time()
-    print('finished order {} in {:.3g} seconds'.format(ORDER, end-start))
+        start = time.time()
+        enum_graceful_spiders(g, order - 1)
+        end = time.time()
+        print('finished order {} in {:.3g} seconds'.format(order, end-start))
