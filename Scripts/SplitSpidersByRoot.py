@@ -27,5 +27,5 @@ def separate_spiders(order):
             outfile.write(line)
 
 if __name__ == '__main__':
-    for i in range(4, 6):
+    for i in range(4, 15):
         separate_spiders(i)
