@@ -16,17 +16,17 @@ def is_alpha(edge_list):
 
 
 def separate_alpha_spiders(order, root):
+    if not os.path.exists(ALPHA_FOLDER.format(order)):
+        os.makedirs(ALPHA_FOLDER.format(order))
     if os.path.exists(SEPARATED_FILE.format(order, root)):  # some files don't!
-        for line in open(SEPARATED_FILE.format(order, root), 'r').readlines():
-            edges = eval("list({})".format(line))
-            if is_alpha(edges):
-                if not os.path.exists(ALPHA_FOLDER.format(order)):
-                    os.makedirs(ALPHA_FOLDER.format(order))
-                out_path = ALPHA_FOLDER + "/" + ALPHA_FILE
-                with open(out_path.format(order, root), 'a') as outfile:
+        out_path = ALPHA_FOLDER + "/" + ALPHA_FILE
+        with open(out_path.format(order, root), 'a') as outfile:
+            for line in open(SEPARATED_FILE.format(order, root), 'r').readlines():
+                edges = eval("list({})".format(line))
+                if is_alpha(edges):
                     outfile.write(line)
 
 if __name__ == '__main__':
-    for ORDER in range(4, 15):
+    for ORDER in range(4, 17):
         for ROOT in range(ORDER):
             separate_alpha_spiders(ORDER, ROOT)

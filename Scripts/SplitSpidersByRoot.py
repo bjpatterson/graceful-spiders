@@ -17,15 +17,19 @@ def detect_root(edge_list):
 
 
 def separate_spiders(order):
+    if not os.path.exists(SEPARATED_FOLDER.format(order)):
+        os.makedirs(SEPARATED_FOLDER.format(order))
+    outfiles = []
+    for id in range(order):
+        out_path = SEPARATED_FOLDER + "/" + SEPARATED_FILE
+        outfiles.append(open(out_path.format(order, id), 'a'))
     for line in open(SPIDER_FILE.format(order), 'r').readlines():
         edges = eval("list({})".format(line))
         root = detect_root(edges)
-        if not os.path.exists(SEPARATED_FOLDER.format(order)):
-            os.makedirs(SEPARATED_FOLDER.format(order))
-        out_path = SEPARATED_FOLDER + "/" + SEPARATED_FILE
-        with open(out_path.format(order, root), 'a') as outfile:
-            outfile.write(line)
+        outfiles[root].write(line)
+    for file in outfiles:
+        file.close()
 
 if __name__ == '__main__':
-    for i in range(4, 15):
+    for i in range(4, 17):
         separate_spiders(i)

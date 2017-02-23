@@ -97,7 +97,7 @@ def potentially_graceful(graph, node1, node2):
 
 if __name__ == '__main__':
 
-    for order in range(4, 15):
+    for order in range(4, 17):
         # create an empty graph of the appropriate order
         g = Graph.Graph()
         for i in range(order):
