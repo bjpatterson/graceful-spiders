@@ -75,7 +75,7 @@ def potentially_graceful(graph, node1, node2):
 
     if num_ones < max_deg:  # there must be a cycle
         return False
-    if 2 * num_zeros + num_ones - max_deg < abs(node2 - node1):
+    if 2 * num_zeros + num_ones - max_deg < node2 - node1:
         # the graph cannot be fully connected with the remaining number of edges
         return False
     if d1 < 2 and d2 < 2:  # both nodes are non-branching after adding the edge
