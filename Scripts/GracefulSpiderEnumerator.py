@@ -14,6 +14,7 @@ def is_unique_graceful_spider(graph):
     if not(ds[0] > 2 >= ds[1] and ds[-1] > 0 and graph.component_count is 1):
         # not a spider
         return False
+    if graph.order % 2 is 1 and graph.get_degree(graph.order / 2) > 2:
         # avoids double-counting odd spiders with central branch labels
         return graph.has_edge(0, graph.order - 2)
     return True
