@@ -78,20 +78,15 @@ def potentially_graceful(graph, node1, node2):
     if 2 * num_zeros + num_ones - max_deg < node2 - node1:
         # the graph cannot be fully connected with the remaining number of edges
         return False
-    if d1 < 2 and d2 < 2:  # both nodes are non-branching after adding the edge
-        return True
     if d1 >= 2 and d2 >= 2:  # both nodes are branching after adding the edge
         return False
-    if d1 > 2 or d2 > 2:  # one node was already the branch node, the other remains non-branching
-        return True
     if max_deg is 2:  # there is not yet a branch node
-        if d1 is 2 and node1 <= max_branch_id:  # node1 is a valid branch node candidate
-            return True
-        if d2 is 2 and node2 <= max_branch_id:  # node2 is a valid branch node candidate
-            return True
+        if d1 is 2 and node1 > max_branch_id:  # node1 is a valid branch node candidate
+            return False
+        if d2 is 2 and node2 > max_branch_id:  # node2 is a valid branch node candidate
+            return False
 
-    # We've touched on all the possible True cases, so if we've made it here, return False
-    return False
+    return True
 
 if __name__ == '__main__':
 
