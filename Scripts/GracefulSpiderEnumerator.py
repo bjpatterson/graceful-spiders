@@ -73,8 +73,6 @@ def potentially_graceful(graph, node1, node2):
     num_zeros = deg_seq.count(0)
     num_ones = deg_seq.count(1)
 
-    if node1 is 0 and node2 is graph.order - 1:  # can't prune the first computational step
-        return True
     if num_ones < max_deg:  # there must be a cycle
         return False
     if 2 * num_zeros + num_ones - max_deg < abs(node2 - node1):
