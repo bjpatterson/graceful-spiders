@@ -11,20 +11,12 @@ def is_unique_graceful_spider(graph):
     (Some special logic detects and rejects certain types of symmetric spiders)
     """
     ds = graph.degree_sequence
-    if ds[0] > 2 >= ds[1] and ds[-1] > 0 and graph.component_count is 1:
-        # connected graph with a single node of degree > 2 (definition of a spider)
-        if graph.order % 2 is 0:  # even-order spiders don't have symmetry issues
-            return True
-        elif graph.get_degree(graph.order / 2) <= 2:  # non-central branch nodes are not symmetric
-            return True
-        elif graph.has_edge(0, graph.order - 2):  # choose exactly one edge with label n-2
-            return True
-        else:
-            # technically a graceful spider, but would result in double-counting
-            return False
-
-    else:
+    if not(ds[0] > 2 >= ds[1] and ds[-1] > 0 and graph.component_count is 1):
+        # not a spider
         return False
+        # avoids double-counting odd spiders with central branch labels
+        return graph.has_edge(0, graph.order - 2)
+    return True
 
 
 def enum_graceful_spiders(partial_graph, next_edge):
@@ -86,6 +78,7 @@ def potentially_graceful(graph, node1, node2):
         if d2 is 2 and node2 > max_branch_id:  # node2 is a valid branch node candidate
             return False
 
+    # We've touched on all False cases, so:
     return True
 
 if __name__ == '__main__':
