@@ -66,18 +66,23 @@ def potentially_graceful(graph, node1, node2):
     num_zeros = deg_seq.count(0)
     num_ones = deg_seq.count(1)
 
-    if num_ones < max_deg:  # there must be a cycle
+    if 2 * num_zeros + abs(num_ones - max_deg) > 2 * (node2 - node1):
+        # a proxy for component count (occasionally underestimates, which is acceptable)
+        return max_deg == 0
+    if d1 >= 2 and d2 >= 2:
+        # both nodes are branching after adding the edge
         return False
-    if 2 * num_zeros + num_ones - max_deg < node2 - node1:
-        # the graph cannot be fully connected with the remaining number of edges
-        return False
-    if d1 >= 2 and d2 >= 2:  # both nodes are branching after adding the edge
-        return False
-    if max_deg is 2:  # there is not yet a branch node
-        if d1 is 2 and node1 > max_branch_id:  # node1 is a valid branch node candidate
+    if max_deg is 2:
+        # there is not yet a branch node
+        if d1 is 2 and node1 > max_branch_id:
+            # node1 is a valid branch node candidate
             return False
-        if d2 is 2 and node2 > max_branch_id:  # node2 is a valid branch node candidate
+        if d2 is 2 and node2 > max_branch_id:
+            # node2 is a valid branch node candidate
             return False
+    elif (d1 is 2 or d2 is 2) and max_deg > 2:
+        # would result in a second branch node
+        return False
 
     # We've touched on all False cases, so:
     return True
