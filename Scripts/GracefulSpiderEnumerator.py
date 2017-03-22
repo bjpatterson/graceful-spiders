@@ -41,6 +41,7 @@ def enum_graceful_spiders(partial_graph, next_edge):
                     edges = [e for e in partial_graph.get_edges()]
                     edge_complement = [(order - b - 1, order - a - 1) for (a, b) in edges]
                     with open(OUTPATH.format(order), 'a') as outfile:
+                        # inefficient file handling ~doubles runtime
                         outfile.write(str(edges))
                         outfile.write('\n')
                         outfile.write(str(edge_complement))
