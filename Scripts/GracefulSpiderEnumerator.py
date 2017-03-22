@@ -68,7 +68,7 @@ def potentially_graceful(graph, node1, node2):
 
     if 2 * num_zeros + abs(num_ones - max_deg) > 2 * (node2 - node1):
         # a proxy for component count (occasionally underestimates, which is acceptable)
-        return max_deg == 0
+        return max_deg < 2  # compensates for some quirks specific to the firs two steps
     if d1 >= 2 and d2 >= 2:
         # both nodes are branching after adding the edge
         return False
