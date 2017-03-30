@@ -57,3 +57,6 @@ Tests/__pycache/*
 
 # compiled python
 *.pyc
+
+# Data files
+Scripts/Results/*

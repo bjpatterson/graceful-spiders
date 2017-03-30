@@ -1,5 +1,0 @@
-GRACEFUL:
-	code = {1: 3},
-	nodes = {0: 0, 1: 1, 2: 2, 3: 3},
-	edges = set([(0, 1), (0, 3), (0, 2)])
-END OF ENUMERATION FOR SPIDERS WITH ORDER 004
